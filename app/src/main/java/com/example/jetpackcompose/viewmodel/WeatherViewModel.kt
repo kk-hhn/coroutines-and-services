@@ -40,14 +40,28 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
+    /**
+     * fetchForecastData fun
+     * utilizes a coroutine with viewModelScope to fetch the weather forecast and write it into the _forecast var
+     * @param city: String
+     * @param apiKey: String
+     * @return null
+    * */
     fun fetchForecastData(city: String, apiKey: String) {
-
-        ////////////////////////////////////
-
-        //Todo
-
-        ////////////////////////////////////
-
+        viewModelScope.launch{
+            try{
+                val forecastResponse = WeatherApiService.fetchForecast(city, apiKey)
+                if(forecastResponse!=null) {
+                    _forecast.value = forecastResponse.list //non-nullable list so no check needed
+                    _errorMessage.value = null
+                }
+                else{
+                    _errorMessage.value= "Failed to fetch forecast data. Please double check your settings."
+                }
+            }catch(e: Exception){
+                _errorMessage.value = "Failed to fetch forecast data with error: ${e.message}"
+            }
+        }
     }
 
     private fun fetchWeatherIcon(iconId: String) {

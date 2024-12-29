@@ -1,0 +1,30 @@
+Antworten
+
+A)  Da Coroutinen keine Threads blockieren, können auch Ressourcen-intensive Aufgaben
+    ohne merkbare Verzögerung oder UI Freezes bewältigt werden, indem man entsprechende Dispatcher benutzt.
+    Muss eine Coroutine auf eine andere Komponente oder langsam bereitgestellte Daten warten,
+    kann diese ebenfalls ohne Probleme suspendiert, also pausiert werden, um unnötigen Ressourcenverbrauch
+    zu minimieren.
+
+B)  Zuerst hatte ich angenommen, eine Aufgabe, die schnell erledigt werden sollte
+    und vom Main Thread aufgerufen wird, sollte man mit Dispatchers.Main aufrufen,
+    sodass sie schnell abgearbeitet wird.
+    Allerdings greift der Aufruf in der Weatherapp über viele Ecken bis in den WeatherApiService
+    auf die openweathermap zu, und für solche I/O intensiven Aufgaben sollte man Dispatchers.IO verwenden
+
+C)  Jede App, welche Musik abspielt, ist gut beraten, Services zu benutzen, da man mit diesen die
+    App in den Hintergrund stellen kann, ohne dass die Musik aufhören würde, zu spielen.
+    Für so etwas ist ein Foreground Service am besten, da dieser zum einen immer eine Notifikation
+    an den Nutzer ausgeben muss (um zu zeigen, dass die App noch läuft), welche man gut direkt als
+    Kontrollfläche für die gespielte Musik verwenden kann, und zum anderen genug Ressourcen für sich
+    beansprucht, dass die App beim Musik Abspielen nicht Stottern sollte.
+    Eine Navigations-App folgt den gleichen Prinzipien, nur dass die Ressourcen verwendet werden müssen,
+    um den Nutzer ständig zu orten und gleichzeitig eventuelle Routen neu zu planen. Die Notifikation kann hier
+    beispielsweise zum Darstellen des nächsten Abbiegevorgangs nützlich gemacht werden.
+
+D)  Wenn man als Nutzer eine App in den Hintergrund stellt, ist ein unnötig erhöhter Ressourcenverbrauch
+    meist nicht im Sinne. Daher ist die Kombination aus Services, welche im Hintergrund laufen können,
+    und Coroutinen, welche effizient und nur bei Bedarf ausgeführt werden, in Ressourcen-Hinsicht sehr
+    hilfreich. Mit den verschiedenen Dispatchern werden die Möglichkeiten zum Sparen weiter erhöht und
+    dank der Scope-Mechanik wird die Kontrolle des Control Flows erleichtert, was gleichzeitig
+    Fehlerbehandlung erleichtert.

@@ -2,6 +2,7 @@ package com.example.jetpackcompose.ui.views
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -106,26 +107,12 @@ fun ForecastWeatherView(forecast: List<ForecastItem>) {
             // Display forecast data
             LazyColumn(
                 modifier = Modifier.fillMaxWidth()
-            ) {
-                ////////////////////////////////////
-
-                //TODO Zeige die Wettervorhersage in dieser Liste an (nutze die WeatherCard Komponente)
-                // Der Text unten darf entfernt werden.
-
-                ////////////////////////////////////
+            ) { items(forecast) { item ->
+                    WeatherCard(
+                        forecastItem = item      //simple utilization of the weathercard class to display forecast items in a lazycolumn
+                    )
+                }
             }
-
         }
-
-        Text(
-            text = "TODO: Implement me :)",
-            style = MaterialTheme.typography.headlineLarge.copy(
-                fontSize = 18.sp,
-                color = Color.Black
-            ),
-            modifier = Modifier
-                .padding(bottom = 32.dp)
-                .align(Alignment.CenterHorizontally)
-        )
     }
 }

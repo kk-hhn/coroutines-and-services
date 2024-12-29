@@ -35,15 +35,8 @@ class PopupService : Service() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-
-
-        ////////////////////////////////////
-
-        //TODO starte den Service hier
-
-        ////////////////////////////////////
-
-
+        val noti= getNotification("ForeGround Service")
+        startForeground(1, noti)            // starts foreground service similar to the example in the slides
         registerUpdateReceiver()
         initializeTimerFromSettings()
     }
